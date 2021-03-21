@@ -14,7 +14,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 
-public class SendMqMessage {
+public class SendReceiveMqMessage {
 
 	@Value(value = "${spring.activemq.broker-url}")
 	private static String connUrl;
