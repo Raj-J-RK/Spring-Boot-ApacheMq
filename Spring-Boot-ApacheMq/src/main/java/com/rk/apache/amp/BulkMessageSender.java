@@ -11,6 +11,7 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 
+import com.google.gson.Gson;
 import com.rk.apache.domain.Employee;
 
 public class BulkMessageSender {
@@ -51,11 +52,14 @@ public class BulkMessageSender {
 	
 	private static void sendObjectMessages() {
 		Message msg;
+		Gson gson = new Gson();
 		try {
 			for(int i=0;i<50;i++) {
 				Employee emp = new Employee("name "+i, 30+i, 1000+i, "location"+i);
-				msg = session.createObjectMessage(emp);
-				msg.setJMSType("Object");
+				//msg = session.createObjectMessage(emp);
+				String jsonMsg = gson.toJson(emp);
+				msg = session.createTextMessage(jsonMsg);
+				msg.setJMSType("TEXT");
 				messageProducer.send(msg);
 			}
 		}
@@ -68,7 +72,7 @@ public class BulkMessageSender {
 		// TODO Auto-generated method stub
 		try {
 		setUpProducer();
-		sendTextMessages();
+		//sendTextMessages();
 		sendObjectMessages();
 		}
 		finally {
